@@ -119,22 +119,17 @@ def GetAnnualStatistics(DataDF):
     WYDataDF = pd.DataFrame(0,index=year_data.index, columns=colnames)
     
     #fill data frame with annual values for the water year, water yer starts on october 1
-    Mean_Flow= DataDF.resample("AS-OCT").mean()
-    Peak_Flow=DataDF.resample("AS-OCT").max()
-    Median_Flow=DataDF.resample("AS-OCT").median()
-    Coeff_Var=(DataDF.resample("AS-OCT").std()/DataDF.resample("AS-OCT").mean())*100.0
-    Skew_R=DataDF.resample("AS-OCT").apply(stats.skew)
+    WYDataDF['Mean Flow']= DataDF.resample("AS-OCT")['Discharge'].mean()
+    WYDataDF['Peak Flow']=DataDF.resample("AS-OCT")['Discharge'].max()
+    WYDataDF['Median Flow']=DataDF.resample("AS-OCT")['Discharge'].median()
+    WYDataDF['Coeff Var']=(DataDF.resample("AS-OCT")['Discharge'].std()/DataDF.resample("AS-OCT")['Discharge'].mean())*100.0
+    WYDataDF['Skew']=DataDF.resample("AS-OCT")['Discharge'].apply(stats.skew)
     WYDataDF['Tqmean']=DataDF.resample("AS-OCT").apply({'Discharge':lambda x:CalcTqmean(x)}) #use .apply and lambda when using a custom function
     WYDataDF['3xMedian']=DataDF.resample("AS-OCT").apply({'Discharge':lambda x:CalcExceed3TimesMedian(x)})
     WYDataDF['7Q']=DataDF['Discharge'].resample("AS-OCT").apply({lambda x:Calc7Q(x)})
     WYDataDF['R-B Index']=DataDF['Discharge'].resample("AS-OCT").apply({lambda x:CalcRBindex(x)})
-   
     WYDataDF['site_no']=DataDF.resample('AS-OCT')['site_no'].mean()   
-    WYDataDF['Mean Flow']= Mean_Flow['Discharge']
-    WYDataDF['Peak Flow']= Peak_Flow['Discharge']
-    WYDataDF['Median Flow']= Median_Flow['Discharge']
-    WYDataDF['Coeff Var']= Coeff_Var['Discharge']
-    WYDataDF['Skew']= Skew_R['Discharge']
+
     return ( WYDataDF )
 
 def GetMonthlyStatistics(DataDF):
@@ -144,7 +139,7 @@ def GetMonthlyStatistics(DataDF):
     global MoDataDF
     #create dataframe to fill with values
     colnames=['site_no', 'Mean Flow', 'Coeff Var', 'Tqmean', 'R-B Index']
-    month_data=DataDF.resample('MS').mean()
+    month_data=DataDF.resample('MS')['Discharge'].mean()
     MoDataDF = pd.DataFrame(0,index=month_data.index, columns=colnames)
     #fill data frame with monthly statistics
     Mean_Flow= DataDF.resample("MS").mean()
