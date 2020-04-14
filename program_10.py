@@ -245,40 +245,40 @@ if __name__ == '__main__':
         print("-"*50, "\n\nSummary of monthly metrics...\n\n", MoDataDF[file].describe(), "\n\nAnnual Monthly Averages...\n\n", MonthlyAverages[file])
         
         
-#run definitions for two rivers, Tippecanoe River and Wildcat River
-ReadData('TippecanoeRiver_Discharge_03331500_19431001-20200315.txt')
-DataDF, MissingValues=ClipData( DataDF,'1969-10-01', '2019-09-30')
-Tippe_WY=GetAnnualStatistics(DataDF)
-Tippe_Mo=GetMonthlyStatistics(DataDF)
-Tippe_annualave=GetAnnualAverages(Tippe_WY).to_frame()#turn series into dataframe
-Tippe_monthlyave= GetMonthlyAverages(Tippe_Mo)
-
-ReadData('WildcatCreek_Discharge_03335000_19540601-20200315.txt')
-DataDF, MissingValues= ClipData( DataDF,'1969-10-01', '2019-09-30')
-Wildcat_WY=GetAnnualStatistics(DataDF)
-Wildcat_Mo=GetMonthlyStatistics(DataDF)
-Wildcat_annualave=GetAnnualAverages(Wildcat_WY).to_frame()
-Wildcat_monthlyave= GetMonthlyAverages(Tippe_Mo)
-
-#######Output results#######
-
-#annual metrics
-Annual_stats=Tippe_WY.append(Wildcat_WY) #put together data from both rivers
-Annual_stats['Station']=['Tippe' if x==3331500 else 'Wildcat' for x in Annual_stats['site_no']]#add column with river name
-Annual_stats.to_csv('Annual_Metrics.csv', sep=',', index=True)#write csv
-
-#monthly metrics
-Month_stats=Tippe_Mo.append(Wildcat_Mo)
-Month_stats['Station']=['Tippe' if x==3331500 else 'Wildcat' for x in Month_stats['site_no']]
-Month_stats.to_csv('Monthly_Metrics.csv', sep=',',index=True)
-
-
-#annual average metrics
-Annual_Ave=pd.merge(Tippe_annualave, Wildcat_annualave,left_index=True, right_index=True,  how='right')
-Annual_Ave1=Annual_Ave.rename(columns={'0_x':"Tippe", '0_y':"Wildcat"})#rename columns of dataframe to indicate river name
-Annual_Ave1.to_csv('Average_Annual_Metrics.txt', sep='\t', index=True)
-
-#monthly average metrics
-Month_Ave=Tippe_monthlyave.append(Wildcat_monthlyave)
-Month_Ave['Station']=['Tippe' if x==3331500 else 'Wildcat' for x in Month_Ave['site_no']]
-Month_Ave.to_csv('Average_Monthly_Metrics.txt', sep='\t',index=True)
+    #run definitions for two rivers, Tippecanoe River and Wildcat River
+    ReadData('TippecanoeRiver_Discharge_03331500_19431001-20200315.txt')
+    DataDF, MissingValues=ClipData( DataDF,'1969-10-01', '2019-09-30')
+    Tippe_WY=GetAnnualStatistics(DataDF)
+    Tippe_Mo=GetMonthlyStatistics(DataDF)
+    Tippe_annualave=GetAnnualAverages(Tippe_WY).to_frame()#turn series into dataframe
+    Tippe_monthlyave= GetMonthlyAverages(Tippe_Mo)
+    
+    ReadData('WildcatCreek_Discharge_03335000_19540601-20200315.txt')
+    DataDF, MissingValues= ClipData( DataDF,'1969-10-01', '2019-09-30')
+    Wildcat_WY=GetAnnualStatistics(DataDF)
+    Wildcat_Mo=GetMonthlyStatistics(DataDF)
+    Wildcat_annualave=GetAnnualAverages(Wildcat_WY).to_frame()
+    Wildcat_monthlyave= GetMonthlyAverages(Tippe_Mo)
+    
+    #######Output results#######
+    
+    #annual metrics
+    Annual_stats=Tippe_WY.append(Wildcat_WY) #put together data from both rivers
+    Annual_stats['Station']=['Tippe' if x==3331500 else 'Wildcat' for x in Annual_stats['site_no']]#add column with river name
+    Annual_stats.to_csv('Annual_Metrics.csv', sep=',', index=True)#write csv
+    
+    #monthly metrics
+    Month_stats=Tippe_Mo.append(Wildcat_Mo)
+    Month_stats['Station']=['Tippe' if x==3331500 else 'Wildcat' for x in Month_stats['site_no']]
+    Month_stats.to_csv('Monthly_Metrics.csv', sep=',',index=True)
+    
+    
+    #annual average metrics
+    Annual_Ave=pd.merge(Tippe_annualave, Wildcat_annualave,left_index=True, right_index=True,  how='right')
+    Annual_Ave1=Annual_Ave.rename(columns={'0_x':"Tippe", '0_y':"Wildcat"})#rename columns of dataframe to indicate river name
+    Annual_Ave1.to_csv('Average_Annual_Metrics.txt', sep='\t', index=True)
+    
+    #monthly average metrics
+    Month_Ave=Tippe_monthlyave.append(Wildcat_monthlyave)
+    Month_Ave['Station']=['Tippe' if x==3331500 else 'Wildcat' for x in Month_Ave['site_no']]
+    Month_Ave.to_csv('Average_Monthly_Metrics.txt', sep='\t',index=True)
