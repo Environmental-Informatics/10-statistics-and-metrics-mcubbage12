@@ -27,8 +27,8 @@ def ReadData( fileName ):
     availabiel.  Function returns the completed DataFrame, and a dictionary 
     designed to contain all missing value counts that is initialized with
     days missing between the first and last date of the file."""
-    #global DataDF
-    #global MissingValues
+    global DataDF
+    global MissingValues
     # define column names
     colNames = ['agency_cd', 'site_no', 'Date', 'Discharge', 'Quality']
   
