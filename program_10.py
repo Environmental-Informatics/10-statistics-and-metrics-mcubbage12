@@ -103,7 +103,7 @@ def CalcExceed3TimesMedian(Qvalues):
        than 3 times the median annual flow value for the given data array."""
     Qvalues=Qvalues.dropna()
     median_year=Qvalues.median() #calculate median for each year
-    median3x=(Qvalues[Qvalues>(3*median_year)].shape[0]) #determine number of days where flow was 3 times the median
+    median3x=(Qvalues>(3*median_year)).sum() #determine number of days where flow was 3 times the median
     return ( median3x )
 
 def GetAnnualStatistics(DataDF):
