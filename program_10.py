@@ -1,15 +1,11 @@
 #!/bin/env python
 # Created on March 25, 2020
-#  by Keith Cherkauer
-#edited by Marissa Cubbage 4/10/2019
-#
+#  by Keith Cherkauer#edited by Marissa Cubbage 4/10/2019#
 # This script servesa as the solution set for assignment-10 on descriptive
 # statistics and environmental informatics.  See the assignment documention 
 # and repository at:
 # https://github.com/Environmental-Informatics/assignment-10.git for more
-# details about the assignment.
-
-
+# details about the assignment
 #import packages
 import pandas as pd
 import scipy.stats as stats
