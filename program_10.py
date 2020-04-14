@@ -40,8 +40,8 @@ def ReadData( fileName ):
     
     #gross data check
     for i in range (0,len(DataDF)-1):
-          if DataDF.iloc[i,2]<0:
-             DataDF.iloc[i,2]=np.nan
+          if 0 > DataDF['Discharge'].iloc[i]:
+             DataDF['Discharge'].iloc[i]=np.nan
           
     
     # quantify the number of missing values
