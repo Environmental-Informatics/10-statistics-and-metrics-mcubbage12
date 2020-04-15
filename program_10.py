@@ -139,20 +139,15 @@ def GetMonthlyStatistics(DataDF):
     global MoDataDF
     #create dataframe to fill with values
     colnames=['site_no', 'Mean Flow', 'Coeff Var', 'Tqmean', 'R-B Index']
-    month_data=DataDF.resample('MS')['Discharge'].mean()
+    month_data=DataDF.resample('MS').mean()
     MoDataDF = pd.DataFrame(0,index=month_data.index, columns=colnames)
     #fill data frame with monthly statistics
-    Mean_Flow= DataDF.resample("MS").mean()
-    Coeff_Var=(DataDF.resample("MS").std()/DataDF.resample("MS").mean())*100.0
-    Tqmean=DataDF.resample("MS").apply(CalcTqmean)
-    RBindex=DataDF.resample("MS").apply(CalcRBindex)
+    MoDataDF['Mean Flow']= DataDF.resample("MS")['Discharge'].mean()
+    MoDataDF['Coeff Var']=(DataDF.resample("MS")['Discharge'].std()/DataDF.resample("MS")['Discharge'].mean())*100.0
+    MoDataDF['Tqmean']=DataDF.resample("MS").apply({'Discharge':lambda x:CalcTqmean(x)})
+    MoDataDF['R-B Index']=DataDF['Discharge'].resample("MS").apply({lambda x:CalcRBindex(x)})
 
     MoDataDF['site_no']=DataDF.resample('MS')['site_no'].mean()   
-
-    MoDataDF['Mean Flow']= Mean_Flow['Discharge']
-    MoDataDF['Coeff Var']= Coeff_Var['Discharge']
-    MoDataDF['Tqmean']= Tqmean['Discharge']
-    MoDataDF['R-B Index']= RBindex['Discharge']
 
     return ( MoDataDF )
 
